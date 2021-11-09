@@ -1,5 +1,6 @@
+import time
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -11,15 +12,29 @@ class BasePage:
         self.browser = browser
         self.link = link
 
-    def click_element(self, locator):
+    def click_element(self, locator, timeout=0):
         """find element and click on it"""
-        self.browser.find_element(*locator).click()
-
-    def get_elements(self, locator, timeout=3):
-        """wait until at least 1 element show on page. Returns list of webelements or None"""
+        # self.browser.find_element(*locator).click()
         try:
             WebDriverWait(self.browser, timeout, 1, TimeoutException).until(
                 EC.presence_of_element_located(locator))
+            self.browser.find_element(*locator).click()
+        except NoSuchElementException:
+            return
+
+    def get_element(self, locator, timeout=0):
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(
+                EC.presence_of_element_located(locator))
+            return self.browser.find_element(*locator)
+        except NoSuchElementException:
+            return None
+
+    def get_elements(self, locator, timeout=0):
+        """wait until at least 1 element show on page. Returns list of webelements or None"""
+        try:
+            WebDriverWait(self.browser, timeout, 1, TimeoutException).until(
+                EC.presence_of_all_elements_located(locator))
             return self.browser.find_elements(*locator)
         except NoSuchElementException:
             return None
@@ -32,13 +47,13 @@ class BasePage:
         except NoSuchElementException:
             return None
 
-    def send_keys(self, keys, locator, enter=False):
+    def send_keys(self, keys, locator, enter=False, timeout=0):
         """
         find element and send keys to it
         If enter==True also appended key ENTER
         """
         suffix = Keys.ENTER if enter else ''
-        self.browser.find_element(*locator).send_keys(keys + suffix)
+        self.get_element(locator, timeout=timeout).send_keys(keys + suffix)
 
     def open(self):
         """open page"""

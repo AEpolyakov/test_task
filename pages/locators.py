@@ -11,7 +11,7 @@ class SearchPageLocators:
 
     FILTER_KEYWORD = (By.XPATH, '//input[@name="keyword"]')
 
-    FILTER_PRICE_FROM = (By.CSS_SELECTOR, '.ec-filter__price-to input')
+    FILTER_PRICE_FROM = (By.CSS_SELECTOR, '.ec-filter__price-from input')
     FILTER_PRICE_TO = (By.CSS_SELECTOR, '.ec-filter__price-to input')
     FILTER_PRICE_CLEAR = (By.CSS_SELECTOR, '.ec-filter--price .ec-link--hover')
 

@@ -1,4 +1,5 @@
 import pytest
+import time
 from .pages.search_page import SearchPage
 
 
@@ -6,47 +7,37 @@ class TestBuyIn10Seconds:
 
     link = 'https://buy-in-10-seconds.company.site/search'
 
-    # def test_price_filter(self, browser):
+    # def test_out_of_stock(self, browser):
     #     page = SearchPage(browser, self.link)
     #     page.open()
     #
-    #     # check for products in page before filtering
-    #     page.check_products()
-    #
-    #     # apply price_from filter and check products
-    #     prices = {'from': '1'}
-    #     page.set_price(prices)
-    #     page.check_products(prices=prices)
-    #
-    #     # apply price_from and price_to filters and check products
-    #     prices = {'from': '1', 'to': '4'}
-    #     page.set_price(prices)
-    #     page.check_products(prices=prices)
-    #
-    #     # apply price_to filter and check products
-    #     prices = {'to': '4'}
-    #     page.set_price(prices)
-    #     page.check_products(prices=prices)
-    #
-    #     # apply no price filters and check products
-    #     page.set_price()
-    #     page.check_products(prices=prices)
+    #     check_by = {'in_stock'}
+    #     page.toggle_in_stock()
+    #     page.check_products(check_by)
 
-    # def test_in_stock_filter(self, browser):
+    # def test_discount(self, browser):
     #     page = SearchPage(browser, self.link)
     #     page.open()
     #
-    #     # check for products in page before filtering
-    #     page.check_products()
-    #
-    #     page.toggle_in_stock()
-    #     page.check_products(in_stock=True)
-    #
-    #     page.toggle_in_stock()
-    #     page.check_products()
+    #     check_by = {'discount'}
+    #     page.toggle_discount()
+    #     page.check_products(check_by)
 
-    def test_1(self, browser):
+    def test_price_filter(self, browser):
         page = SearchPage(browser, self.link)
         page.open()
-        page.check_products()
 
+        prices = {'from': 1, 'to': 3}
+        check_by = {'price': (prices['from'], prices['to'])}
+        page.set_price(prices)
+        time.sleep(10)
+        page.check_products(check_by)
+    #
+    # def test_name_filter(self, browser):
+    #     page = SearchPage(browser, self.link)
+    #     page.open()
+    #
+    #     name_filter_value = 'Товар'
+    #     check_by = {'name': name_filter_value}
+    #     page.set_name_filter(name_filter_value)
+    #     page.check_products(check_by)

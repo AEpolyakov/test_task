@@ -15,17 +15,14 @@ class SearchPage(BasePage):
         search for products on search page.
         in products search for name, price, labels
         """
-        self.wait()
         product_elements = self.get_elements(SearchPageLocators.PRODUCTS, timeout=5)
         products = Products()
         for element in product_elements:
-            name = self.get_sub_element(element, SearchPageLocators.PRODUCT_NAME).text
-            price = self.get_sub_element(element, SearchPageLocators.PRODUCT_PRICE).text
-            label_sale = self.get_sub_element(element, SearchPageLocators.PRODUCT_LABEL_SALE)
-            label_out_of_stock = self.get_sub_element(element, SearchPageLocators.PRODUCT_LABEL_OUT_OF_STOCK)
-            label_sale_text = label_sale.text if label_sale else ''
-            label_out_of_stock_text = label_out_of_stock.text if label_out_of_stock else ''
-            products.append(name, price, label_sale_text, label_out_of_stock_text)
+            name = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_NAME)
+            price = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_PRICE)
+            label_sale = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_SALE)
+            label_out_of_stock = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_OUT_OF_STOCK)
+            products.append(name, price, label_sale, label_out_of_stock)
         print(products)
 
         if 'discount' in check_by:
@@ -49,17 +46,12 @@ class SearchPage(BasePage):
                            locator=SearchPageLocators.FILTER_PRICE_FROM,
                            enter=True,
                            timeout=5)
-            self.wait(3)
         if 'to' in prices:
             self.send_keys(keys=str(prices['to']),
                            locator=SearchPageLocators.FILTER_PRICE_TO,
                            enter=True,
                            timeout=5)
-            self.wait()
 
-    @staticmethod
-    def wait(value=1):
-        time.sleep(value)
 
     def clear_price_filter(self):
         """find clear price element and click on it"""

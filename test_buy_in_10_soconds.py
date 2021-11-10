@@ -7,13 +7,13 @@ class TestBuyIn10Seconds:
 
     link = 'https://buy-in-10-seconds.company.site/search'
 
-    # def test_out_of_stock(self, browser):
-    #     page = SearchPage(browser, self.link)
-    #     page.open()
-    #
-    #     check_by = {'in_stock'}
-    #     page.toggle_in_stock()
-    #     page.check_products(check_by)
+    def test_out_of_stock(self, browser):
+        page = SearchPage(browser, self.link)
+        page.open()
+
+        check_by = {'in_stock'}
+        page.toggle_in_stock()
+        page.check_products(check_by)
 
     # def test_discount(self, browser):
     #     page = SearchPage(browser, self.link)
@@ -23,15 +23,15 @@ class TestBuyIn10Seconds:
     #     page.toggle_discount()
     #     page.check_products(check_by)
 
-    def test_price_filter(self, browser):
-        page = SearchPage(browser, self.link)
-        page.open()
-
-        prices = {'from': 1, 'to': 3}
-        check_by = {'price': (prices['from'], prices['to'])}
-        page.set_price(prices)
-        time.sleep(10)
-        page.check_products(check_by)
+    # def test_price_filter(self, browser):
+    #     page = SearchPage(browser, self.link)
+    #     page.open()
+    #
+    #     prices = {'from': 1, 'to': 3}
+    #     check_by = {'price': (prices['from'], prices['to'])}
+    #     page.set_price(prices)
+    #     time.sleep(10)
+    #     page.check_products(check_by)
     #
     # def test_name_filter(self, browser):
     #     page = SearchPage(browser, self.link)

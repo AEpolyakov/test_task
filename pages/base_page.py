@@ -13,22 +13,18 @@ class BasePage:
         self.link = link
         self.default_timeout = 3
 
-    def click_element(self, locator, timeout=None):
+    def click_element(self, locator, timeout=0):
         """find element and click on it"""
-        if timeout is None:
-            timeout = self.default_timeout
 
-        element = self.get_element(locator, timeout)
+        element = self.get_element(locator)
         if element:
             element.click()
 
-    def get_element(self, locator, timeout=0):
+    def get_element(self, locator, timeout=3):
         element = WebDriverWait(driver=self.browser,
                                 timeout=timeout,
                                 ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
             EC.presence_of_element_located(locator))
-        if not element:
-            return None
         return element
 
     def get_elements(self, locator, timeout=0):
@@ -37,8 +33,6 @@ class BasePage:
                                  timeout=timeout,
                                  ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
             EC.presence_of_all_elements_located(locator))
-        if not elements:
-            return None
         return elements
 
     @staticmethod

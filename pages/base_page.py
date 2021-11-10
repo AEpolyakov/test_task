@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class BasePage:
     """base page class. Realise common methods."""
     default_timeout = 5
+    default_script_timeout = 1
 
     def __init__(self, browser, link):
         self.browser = browser
@@ -21,6 +22,7 @@ class BasePage:
             element.click()
 
     def get_element(self, locator, timeout=default_timeout):
+        """get element by locator"""
         element = WebDriverWait(driver=self.browser,
                                 timeout=timeout,
                                 ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
@@ -28,7 +30,7 @@ class BasePage:
         return element
 
     def get_elements(self, locator, timeout=default_timeout):
-        """wait until at least 1 element show on page. Returns list of webelements or None"""
+        """get list of elements by locator"""
         elements = WebDriverWait(driver=self.browser,
                                  timeout=timeout,
                                  ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
@@ -37,6 +39,7 @@ class BasePage:
 
     @staticmethod
     def get_sub_element_text(element, locator):
+        """find element inside element"""
         try:
             sub_element = element.find_element(*locator)
             return sub_element.text
@@ -48,12 +51,9 @@ class BasePage:
         find element and send keys to it
         If enter==True also appended key ENTER
         """
-        print(f'send keys {keys} {locator} {timeout=}')
         element = self.get_element(locator)
         for find_try in range(timeout):
-            print(f'set name {find_try=}')
             try:
-                print(f'try {find_try}')
                 element.send_keys(keys)
                 break
             except StaleElementReferenceException:

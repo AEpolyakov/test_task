@@ -1,7 +1,7 @@
 import time
 from .base_page import BasePage
 from .locators import SearchPageLocators
-from .utils import Products
+from .products import Products
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.keys import Keys
 
@@ -29,16 +29,14 @@ class SearchPage(BasePage):
         in products search for name, price, labels
         """
 
-        time.sleep(1)
+        time.sleep(self.default_script_timeout)
         products = None
         for find_try in range(self.default_timeout):
             try:
                 products = self.get_products()
             except StaleElementReferenceException:
-                time.sleep(1)
+                time.sleep(self.default_script_timeout)
         print(products)
-
-        time.sleep(10)
 
         if 'discount' in check_by:
             print('assert by discount')
@@ -59,16 +57,15 @@ class SearchPage(BasePage):
 
     def set_price(self, prices: dict):
         """set price filter from given dict"""
-        print(f'set price {prices}')
         if 'from' in prices:
             self.send_keys(prices['from'], SearchPageLocators.FILTER_PRICE_FROM)
             self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_FROM)
-            time.sleep(1)
+            time.sleep(self.default_script_timeout)
 
         if 'to' in prices:
             self.send_keys(prices['to'], SearchPageLocators.FILTER_PRICE_TO)
             self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_TO)
-            time.sleep(1)
+            time.sleep(self.default_script_timeout)
 
     def toggle_in_stock(self):
         """find checkbox "in stock" and click on it"""

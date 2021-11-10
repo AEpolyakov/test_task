@@ -59,17 +59,16 @@ class SearchPage(BasePage):
 
     def set_price(self, prices: dict):
         """set price filter from given dict"""
+        print(f'set price {prices}')
         if 'from' in prices:
             self.send_keys(prices['from'], SearchPageLocators.FILTER_PRICE_FROM)
+            self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_FROM)
+            time.sleep(1)
 
         if 'to' in prices:
-            self.send_keys(prices['from'], SearchPageLocators.FILTER_PRICE_TO)
-
-        self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_FROM)
-
-    def clear_price_filter(self):
-        """find clear price element and click on it"""
-        self.click_element(SearchPageLocators.FILTER_PRICE_CLEAR, timeout=5)
+            self.send_keys(prices['to'], SearchPageLocators.FILTER_PRICE_TO)
+            self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_TO)
+            time.sleep(1)
 
     def toggle_in_stock(self):
         """find checkbox "in stock" and click on it"""

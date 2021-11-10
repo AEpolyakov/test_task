@@ -20,14 +20,14 @@ class BasePage:
         if element:
             element.click()
 
-    def get_element(self, locator, timeout=5):
+    def get_element(self, locator, timeout=default_timeout):
         element = WebDriverWait(driver=self.browser,
                                 timeout=timeout,
                                 ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
             EC.presence_of_element_located(locator))
         return element
 
-    def get_elements(self, locator, timeout=0):
+    def get_elements(self, locator, timeout=default_timeout):
         """wait until at least 1 element show on page. Returns list of webelements or None"""
         elements = WebDriverWait(driver=self.browser,
                                  timeout=timeout,
@@ -43,16 +43,18 @@ class BasePage:
         except NoSuchElementException:
             return ''
 
-    def send_keys(self, keys, locator, timeout=0):
+    def send_keys(self, keys, locator, timeout=default_timeout):
         """
         find element and send keys to it
         If enter==True also appended key ENTER
         """
         print(f'send keys {keys} {locator} {timeout=}')
+        element = self.get_element(locator)
         for find_try in range(timeout):
             print(f'set name {find_try=}')
             try:
-                self.get_element(*locator).send_keys(keys)
+                print(f'try {find_try}')
+                element.send_keys(keys)
                 break
             except StaleElementReferenceException:
                 time.sleep(1)

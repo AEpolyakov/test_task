@@ -1,5 +1,4 @@
 import time
-from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
     """base page class. Realise common methods."""
+    default_timeout = 5
 
     def __init__(self, browser, link):
         self.browser = browser
@@ -20,7 +20,7 @@ class BasePage:
         if element:
             element.click()
 
-    def get_element(self, locator, timeout=3):
+    def get_element(self, locator, timeout=5):
         element = WebDriverWait(driver=self.browser,
                                 timeout=timeout,
                                 ignored_exceptions=(TimeoutException, NoSuchElementException)).until(
@@ -43,14 +43,19 @@ class BasePage:
         except NoSuchElementException:
             return ''
 
-    def send_keys(self, keys, locator, enter=False, timeout=0):
+    def send_keys(self, keys, locator, timeout=0):
         """
         find element and send keys to it
         If enter==True also appended key ENTER
         """
-        element = self.get_element(locator, timeout=timeout)
-        if element:
-            element.send_keys(keys)
+        print(f'send keys {keys} {locator} {timeout=}')
+        for find_try in range(timeout):
+            print(f'set name {find_try=}')
+            try:
+                self.get_element(*locator).send_keys(keys)
+                break
+            except StaleElementReferenceException:
+                time.sleep(1)
 
     def open(self):
         """open page"""

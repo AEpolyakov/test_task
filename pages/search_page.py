@@ -3,6 +3,7 @@ from .base_page import BasePage
 from .locators import SearchPageLocators
 from .utils import Products
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.keys import Keys
 
 
 class SearchPage(BasePage):
@@ -10,30 +11,34 @@ class SearchPage(BasePage):
     search page class
     realises methods for search page
     """
-    default_timeout = 5
+
+    def get_products(self):
+        products = Products()
+        product_elements = self.get_elements(SearchPageLocators.PRODUCTS, timeout=5)
+        for element in product_elements:
+            name = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_NAME)
+            price = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_PRICE)
+            label_sale = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_SALE)
+            label_out_of_stock = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_OUT_OF_STOCK)
+            products.append(name, price, label_sale, label_out_of_stock)
+        return products
 
     def check_products(self, check_by=None):
         """
         search for products on search page.
         in products search for name, price, labels
         """
-        products = Products()
+
         time.sleep(1)
+        products = None
         for find_try in range(self.default_timeout):
-            print(f'for {find_try}')
             try:
-                product_elements = self.get_elements(SearchPageLocators.PRODUCTS, timeout=5)
-                for element in product_elements:
-                    name = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_NAME)
-                    price = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_PRICE)
-                    label_sale = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_SALE)
-                    label_out_of_stock = self.get_sub_element_text(element, SearchPageLocators.PRODUCT_LABEL_OUT_OF_STOCK)
-                    products.append(name, price, label_sale, label_out_of_stock)
-                break
+                products = self.get_products()
             except StaleElementReferenceException:
-                print(f'state element ref')
                 time.sleep(1)
         print(products)
+
+        time.sleep(10)
 
         if 'discount' in check_by:
             print('assert by discount')
@@ -54,17 +59,13 @@ class SearchPage(BasePage):
 
     def set_price(self, prices: dict):
         """set price filter from given dict"""
-        print(f'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!{prices=} {prices["from"]=} {prices["to"]=}')
         if 'from' in prices:
-            self.send_keys(keys=str(prices['from']),
-                           locator=SearchPageLocators.FILTER_PRICE_FROM,
-                           enter=True,
-                           timeout=5)
+            self.send_keys(prices['from'], SearchPageLocators.FILTER_PRICE_FROM)
+
         if 'to' in prices:
-            self.send_keys(keys=str(prices['to']),
-                           locator=SearchPageLocators.FILTER_PRICE_TO,
-                           enter=True,
-                           timeout=5)
+            self.send_keys(prices['from'], SearchPageLocators.FILTER_PRICE_TO)
+
+        self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_PRICE_FROM)
 
     def clear_price_filter(self):
         """find clear price element and click on it"""
@@ -84,6 +85,5 @@ class SearchPage(BasePage):
 
     def set_name_filter(self, filter_value):
         """find filter input and send keys to it"""
-        self.send_keys(keys=filter_value,
-                       locator=SearchPageLocators.FILTER_KEYWORD,
-                       enter=True)
+        self.send_keys(filter_value, SearchPageLocators.FILTER_KEYWORD)
+        self.send_keys(Keys.ENTER, SearchPageLocators.FILTER_KEYWORD)

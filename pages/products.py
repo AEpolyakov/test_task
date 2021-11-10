@@ -1,5 +1,3 @@
-"""classes that realises check product methods"""
-
 
 class Product:
     """model of product from search page"""
@@ -34,7 +32,7 @@ class Products:
                 return False
         return True
 
-    def is_in_price_range(self, price_from=0.0, price_to=2e+120):
+    def is_in_price_range(self, price_from=0.0, price_to=1e+308):
         """check that every product price is within given range"""
         for products in self.products:
             if price_from and (products.price < price_from):

@@ -19,7 +19,6 @@ class TestBuyIn10Seconds:
         check_method = {IN_STOCK}
 
         page = SearchPage(browser, self.link)
-        page.open()
         page.toggle_in_stock()
         page.check_filter(check_method)
         page.check_products(check_method)
@@ -36,7 +35,6 @@ class TestBuyIn10Seconds:
         check_method = {DISCOUNT}
 
         page = SearchPage(browser, self.link)
-        page.open()
         page.toggle_discount()
         page.check_filter(check_method)
         page.check_products(check_method)
@@ -53,7 +51,6 @@ class TestBuyIn10Seconds:
         check_method = {PRICE_FROM: 2}
 
         page = SearchPage(browser, self.link)
-        page.open()
         page.set_price(check_method)
         page.check_filter(check_method)
         page.check_products(check_method)
@@ -72,7 +69,6 @@ class TestBuyIn10Seconds:
         check_method = {KEYWORD: name_filter_value}
 
         page = SearchPage(browser, self.link)
-        page.open()
         page.set_name_filter(name_filter_value)
         page.check_filter(check_method)
         page.check_products(check_method)
@@ -93,7 +89,6 @@ class TestBuyIn10Seconds:
         check_method = {PRICE_FROM: 1, PRICE_TO: 3}
 
         page = SearchPage(browser, self.link)
-        page.open()
 
         page.set_price(check_method)
         page.check_filter(check_method)
@@ -119,14 +114,10 @@ class TestBuyIn10Seconds:
         check_method = {PRICE_FROM: 1, PRICE_TO: 3}
 
         page = SearchPage(browser, self.link)
-        page.open()
-
         page.set_price(check_method)
         page.check_filter(check_method)
-
         page.toggle_in_stock()
         check_method[IN_STOCK] = None
         page.check_filter(check_method)
-
         page.check_products(check_method)
 

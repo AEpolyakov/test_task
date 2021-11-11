@@ -13,6 +13,7 @@ class BasePage:
         self.browser = browser
         self.link = link
         self.default_timeout = 3
+        self.open()
 
     def click_element(self, locator, timeout=0):
         """find element and click on it"""

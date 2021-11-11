@@ -64,6 +64,7 @@ class SearchPage(BasePage):
             assert products.are_in_name_filter(check_method[KEYWORD]), 'name filter not working'
 
     def get_filters(self, check_method):
+        """returns values of current filters on search page"""
         filters = {}
         if DISCOUNT in check_method:
             filters[DISCOUNT] = self.get_element(SearchPageLocators.FILTER_WITH_DISCOUNT).get_attribute('checked'),
@@ -89,6 +90,7 @@ class SearchPage(BasePage):
         return filters
 
     def check_filter(self, check_method):
+        """check if all filters are on search page"""
         time.sleep(self.default_script_timeout)
 
         filters = {}

@@ -18,30 +18,35 @@ class Products:
         product = Product(name, price, label_sale, label_out_of_stock)
         self.products.append(product)
 
-    def is_discount_only(self):
+    def are_discount_only(self):
         """check that every product is with discount label"""
         for product in self.products:
             if not product.label_sale:
                 return False
         return True
 
-    def is_not_out_of_stock(self):
+    def are_not_out_of_stock(self):
         """check that every product is not out of stock"""
         for product in self.products:
             if product.label_out_of_stock:
                 return False
         return True
 
-    def is_in_price_range(self, price_from=0.0, price_to=1e+308):
-        """check that every product price is within given range"""
+    def are_in_price_from(self, price_from):
+        """check that every product price is more than given number"""
         for products in self.products:
             if price_from and (products.price < price_from):
                 return False
+        return True
+
+    def are_in_price_to(self, price_to):
+        """check that every product price is less than given number"""
+        for products in self.products:
             if price_to and (products.price > price_to):
                 return False
         return True
 
-    def is_in_name_filter(self, filter_value: str):
+    def are_in_name_filter(self, filter_value: str):
         """check that every product name contains given string"""
         for products in self.products:
             if filter_value not in products.name:

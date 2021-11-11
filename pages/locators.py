@@ -19,4 +19,9 @@ class SearchPageLocators:
     FILTER_WITH_DISCOUNT = (By.ID, 'checkbox-on_sale')
     FILTER_CAT1 = (By.ID, 'checkbox-category-122178970')
 
+    FILTER_PILL = (By.CSS_SELECTOR, '.ec-pill__text-inner')
+    FILTER_CLEAR_ALL = (By.CSS_SELECTOR, '.ec-filters__summary a.ec-filters__clear-all-link')
+
     PRODUCTS_GRID = (By.CSS_SELECTOR, '.grid__wrap-inner')
+
+

@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class BasePage:
     """base page class. Realise common methods."""
-    default_timeout = 5
+    default_timeout = 10
     default_script_timeout = 1
 
     def __init__(self, browser, link):
